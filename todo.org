@@ -1,0 +1,5 @@
+* Example
+** TODO implement the sugitani procedure
+** TODO implement dealing with additional endpoints in the interim analysis
+** TODO comment code in classes
+** TODO refactor everything
