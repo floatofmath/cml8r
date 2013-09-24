@@ -6,13 +6,30 @@ source('../functions.R')
 source('functions.R')
 
 
-simulation(.3,0,1,1,1,
-           .5,0,
-           .3,gamma=1/2,
-           1/2,
-           .7,
-           .3,
-           0,B=10^5,alpha=.05)
+
+
+
+## Scenario (A)
+##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
+A <- simulation(.0,.0,.0,.0,.0,  .5,.5,  .3,0,    .5,1,0,-10,   10^5, .025)
+
+## Scenario (B)
+##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
+B1 <- simulation( .3,.0, 1,.0,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+B2 <- simulation( .3,.0, 1,.5,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+B3 <- simulation( .3,.0, 1, 1,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+
+## Scenario (C)
+##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
+C1 <- simulation( .3,.5, 1,.0,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+C2 <- simulation( .3,.5, 1,.5,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+C3 <- simulation( .3,.5, 1, 1,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+
+## Scenario (D)
+##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
+D1 <- simulation( .3, 1, 1,.0,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+D2 <- simulation( .3, 1, 1,.5,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
+D3 <- simulation( .3, 1, 1, 1,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.5),   10^5, .025)
 
 
 or <- .3

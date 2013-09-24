@@ -156,10 +156,11 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
 
 
   ## sugitani in 50% of cases select 1, select the better in 50% of cases
+  ## correction: in select the better in 75% of cases
 
   select <- sample(1:B,B/2)
   goon <- setdiff(1:B,select)
-  sellar <- sample(select,B/4)
+  sellar <- sample(select,3*B/8)
   selsma <- setdiff(select,sellar)
   selone <- c(intersect(larger1,sellar),intersect(larger2,selsma))
   seltwo <- c(intersect(larger2,sellar),intersect(larger1,selsma))
@@ -203,35 +204,55 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
   
   ## hypothetical
   preplanned <- rowSums(ctd)/B
+  preplanned <- c(preplanned,sum(apply(ctd,2,any,na.rm=T))/B,rowSums(is.na(ctd)[c(1,2),])/B)
   improved <- rowSums(ctdne)/B
+  improved <- c(improved,sum(apply(ctdne,2,any,na.rm=T))/B,rowSums(is.na(ctdne)[c(1,2),])/B)
   pctds1 <- rowSums(ctds1)/B
-  pctds2 <- rowSums(ctds2)/B                        
+  pctds1 <- c(pctds1,sum(apply(ctds1,2,any,na.rm=T))/B,rowSums(is.na(ctds1)[c(1,2),])/B)
+  pctds2 <- rowSums(ctds2)/B
+  pctds2 <- c(pctds2,sum(apply(ctds2,2,any,na.rm=T))/B,rowSums(is.na(ctds2)[c(1,2),])/B)
   pctds1r <- rowSums(ctds1r)/B
-  pctds2r <- rowSums(ctds2r)/B                        
+  pctds1r <- c(pctds1r,sum(apply(ctds1r,2,any,na.rm=T))/B,rowSums(is.na(ctds1r)[c(1,2),])/B)
+  pctds2r <- rowSums(ctds2r)/B
+  pctds2r <- c(pctds2r,sum(apply(ctds2r,2,any,na.rm=T))/B,rowSums(is.na(ctds2r)[c(1,2),])/B)
   pstps1 <- rowSums(stps1)/B
+  pstps1 <- c(pstps1,sum(apply(stps1,2,any,na.rm=T))/B,rowSums(is.na(stps1)[c(1,2),])/B)
   pstps2 <- rowSums(stps2)/B
+  pstps2 <- c(pstps2,sum(apply(stps2,2,any,na.rm=T))/B,rowSums(is.na(stps2)[c(1,2),])/B)
   pstps1r <- rowSums(stps1r)/B
+  pstps1r <- c(pstps1r,sum(apply(stps1r,2,any,na.rm=T))/B,rowSums(is.na(stps1r)[c(1,2),])/B)
   pstps2r <- rowSums(stps2r)/B
+  pstps2r <- c(pstps2r,sum(apply(stps2r,2,any,na.rm=T))/B,rowSums(is.na(stps2r)[c(1,2),])/B)
 
   ## simple
   pctdl <- rowSums(ctdl,na.rm=T)/B
+  pctdl <- c(pctdl,sum(apply(ctdl,2,any,na.rm=T))/B,rowSums(is.na(ctdl)[c(1,2),])/B)
   pstpl <- rowSums(stpl,na.rm=T)/B
+  pstpl <- c(pstpl,sum(apply(stpl,2,any,na.rm=T))/B,rowSums(is.na(stpl)[c(1,2),])/B)
   pctdlr <- rowSums(ctdlr,na.rm=T)/B
+  pctdlr <- c(pctdlr,sum(apply(ctdlr,2,any,na.rm=T))/B,rowSums(is.na(ctdlr)[c(1,2),])/B)
   pstplr <- rowSums(stplr,na.rm=T)/B
+  pstplr <- c(pstplr,sum(apply(stplr,2,any,na.rm=T))/B,rowSums(is.na(stplr)[c(1,2),])/B)
 
 
   ## Sugitani
-  pctpsu <- rowSums(ctdsu,na.rm=T)/B
+  pctdsu <- rowSums(ctdsu,na.rm=T)/B
+  pctdsu <- c(pctdsu,sum(apply(ctdsu,2,any,na.rm=T))/B,rowSums(is.na(ctdsu)[c(1,2),])/B)
   pstpsu <- rowSums(stpsu,na.rm=T)/B
-  pctpsur <- rowSums(ctdsur,na.rm=T)/B
+  pstpsu <- c(pstpsu,sum(apply(stpsu,2,any,na.rm=T))/B,rowSums(is.na(stpsu)[c(1,2),])/B)
+  pctdsur <- rowSums(ctdsur,na.rm=T)/B
+  pctdsur <- c(pctdsur,sum(apply(ctdsur,2,any,na.rm=T))/B,rowSums(is.na(ctdsur)[c(1,2),])/B)
   pstpsur <- rowSums(stpsur,na.rm=T)/B
+  pstpsur <- c(pstpsur,sum(apply(stpsur,2,any,na.rm=T))/B,rowSums(is.na(stpsur)[c(1,2),])/B)
 
 
  
   
   ## sophisticated
   pctdls <- rowSums(ctdls,na.rm=T)/B
+  pctdls <- c(pctdls,sum(apply(ctdls,2,any,na.rm=T))/B,rowSums(is.na(ctdls)[c(1,2),])/B)
   pstpls <- rowSums(stpls,na.rm=T)/B
+  pstpls <- c(pstpls,sum(apply(stpls,2,any,na.rm=T))/B,rowSums(is.na(stpls)[c(1,2),])/B)
 
   out <- rbind(
     preplanned,
@@ -248,9 +269,9 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
     pstpl,
     pctdlr,
     pstplr,
-    pctpsu,
+    pctdsu,
     pstpsu,
-    pctpsur,
+    pctdsur,
     pstpsur,
     pctdls,
     pstpls)
@@ -266,4 +287,3 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
   return(out)
                       
 }
-    
