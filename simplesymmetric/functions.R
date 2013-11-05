@@ -30,13 +30,15 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
                        v,#interim timing
                        cpup,cpdn,sftt,#conditional power upper limit, conditional power lower limit, safety threshhold
                        B=10^4,
-                       alpha=.025){
+                       alpha=.025,
+                       t1=FALSE # should type 1 errors be counted?
+                       ){
   ## correlation structure                     
   R <- make.correlation(r,g)
   ## number of simulation runs
   #B <- 10^4
   ## bonferroni sample size formula (we may replace that with sth. gmcp'ish)
-  n2 <- n1 <- 106#ceiling(((qnorm(alpha/2,lower=F)+qnorm(.8))^2)/D^2)
+  n2 <- n1 <- 110#ceiling(((qnorm(alpha/2,lower=F)+qnorm(.8))^2)/D^2)
   ## drop one treatment
   n2ssr <- n2*1.5
   ## efficacy/safety profile
@@ -201,57 +203,58 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
   stpls[,unsave2] <- stps1r[,unsave2]
   stpls[,intersect(unsave1,unsave2)] <- NA
 
-  
+  alt <- rep(1,4)
+  if(!t1){ alt[which(m[1:4] == 0)] <- 0 }
   ## hypothetical
-  preplanned <- rowSums(ctd)/B
+  preplanned <- alt*rowSums(ctd)/B
   preplanned <- c(preplanned,sum(apply(ctd,2,any,na.rm=T))/B,rowSums(is.na(ctd)[c(1,2),])/B)
-  improved <- rowSums(ctdne)/B
+  improved <- alt*rowSums(ctdne)/B
   improved <- c(improved,sum(apply(ctdne,2,any,na.rm=T))/B,rowSums(is.na(ctdne)[c(1,2),])/B)
-  pctds1 <- rowSums(ctds1)/B
+  pctds1 <- alt*rowSums(ctds1)/B
   pctds1 <- c(pctds1,sum(apply(ctds1,2,any,na.rm=T))/B,rowSums(is.na(ctds1)[c(1,2),])/B)
-  pctds2 <- rowSums(ctds2)/B
+  pctds2 <- alt*rowSums(ctds2)/B
   pctds2 <- c(pctds2,sum(apply(ctds2,2,any,na.rm=T))/B,rowSums(is.na(ctds2)[c(1,2),])/B)
-  pctds1r <- rowSums(ctds1r)/B
+  pctds1r <- alt*rowSums(ctds1r)/B
   pctds1r <- c(pctds1r,sum(apply(ctds1r,2,any,na.rm=T))/B,rowSums(is.na(ctds1r)[c(1,2),])/B)
-  pctds2r <- rowSums(ctds2r)/B
+  pctds2r <- alt*rowSums(ctds2r)/B
   pctds2r <- c(pctds2r,sum(apply(ctds2r,2,any,na.rm=T))/B,rowSums(is.na(ctds2r)[c(1,2),])/B)
-  pstps1 <- rowSums(stps1)/B
+  pstps1 <- alt*rowSums(stps1)/B
   pstps1 <- c(pstps1,sum(apply(stps1,2,any,na.rm=T))/B,rowSums(is.na(stps1)[c(1,2),])/B)
-  pstps2 <- rowSums(stps2)/B
+  pstps2 <- alt*rowSums(stps2)/B
   pstps2 <- c(pstps2,sum(apply(stps2,2,any,na.rm=T))/B,rowSums(is.na(stps2)[c(1,2),])/B)
-  pstps1r <- rowSums(stps1r)/B
+  pstps1r <- alt*rowSums(stps1r)/B
   pstps1r <- c(pstps1r,sum(apply(stps1r,2,any,na.rm=T))/B,rowSums(is.na(stps1r)[c(1,2),])/B)
-  pstps2r <- rowSums(stps2r)/B
+  pstps2r <- alt*rowSums(stps2r)/B
   pstps2r <- c(pstps2r,sum(apply(stps2r,2,any,na.rm=T))/B,rowSums(is.na(stps2r)[c(1,2),])/B)
 
   ## simple
-  pctdl <- rowSums(ctdl,na.rm=T)/B
+  pctdl <- alt*rowSums(ctdl,na.rm=T)/B
   pctdl <- c(pctdl,sum(apply(ctdl,2,any,na.rm=T))/B,rowSums(is.na(ctdl)[c(1,2),])/B)
-  pstpl <- rowSums(stpl,na.rm=T)/B
+  pstpl <- alt*rowSums(stpl,na.rm=T)/B
   pstpl <- c(pstpl,sum(apply(stpl,2,any,na.rm=T))/B,rowSums(is.na(stpl)[c(1,2),])/B)
-  pctdlr <- rowSums(ctdlr,na.rm=T)/B
+  pctdlr <- alt*rowSums(ctdlr,na.rm=T)/B
   pctdlr <- c(pctdlr,sum(apply(ctdlr,2,any,na.rm=T))/B,rowSums(is.na(ctdlr)[c(1,2),])/B)
-  pstplr <- rowSums(stplr,na.rm=T)/B
+  pstplr <- alt*rowSums(stplr,na.rm=T)/B
   pstplr <- c(pstplr,sum(apply(stplr,2,any,na.rm=T))/B,rowSums(is.na(stplr)[c(1,2),])/B)
 
 
   ## Sugitani
-  pctdsu <- rowSums(ctdsu,na.rm=T)/B
+  pctdsu <- alt*rowSums(ctdsu,na.rm=T)/B
   pctdsu <- c(pctdsu,sum(apply(ctdsu,2,any,na.rm=T))/B,rowSums(is.na(ctdsu)[c(1,2),])/B)
-  pstpsu <- rowSums(stpsu,na.rm=T)/B
+  pstpsu <- alt*rowSums(stpsu,na.rm=T)/B
   pstpsu <- c(pstpsu,sum(apply(stpsu,2,any,na.rm=T))/B,rowSums(is.na(stpsu)[c(1,2),])/B)
-  pctdsur <- rowSums(ctdsur,na.rm=T)/B
+  pctdsur <- alt*rowSums(ctdsur,na.rm=T)/B
   pctdsur <- c(pctdsur,sum(apply(ctdsur,2,any,na.rm=T))/B,rowSums(is.na(ctdsur)[c(1,2),])/B)
-  pstpsur <- rowSums(stpsur,na.rm=T)/B
+  pstpsur <- alt*rowSums(stpsur,na.rm=T)/B
   pstpsur <- c(pstpsur,sum(apply(stpsur,2,any,na.rm=T))/B,rowSums(is.na(stpsur)[c(1,2),])/B)
 
 
  
   
   ## sophisticated
-  pctdls <- rowSums(ctdls,na.rm=T)/B
+  pctdls <- alt*rowSums(ctdls,na.rm=T)/B
   pctdls <- c(pctdls,sum(apply(ctdls,2,any,na.rm=T))/B,rowSums(is.na(ctdls)[c(1,2),])/B)
-  pstpls <- rowSums(stpls,na.rm=T)/B
+  pstpls <- alt*rowSums(stpls,na.rm=T)/B
   pstpls <- c(pstpls,sum(apply(stpls,2,any,na.rm=T))/B,rowSums(is.na(stpls)[c(1,2),])/B)
 
   out <- rbind(

@@ -1,31 +1,121 @@
 \documentclass{article}
+
+\usepackage{colortbl}
+\usepackage{booktabs}
 \begin{document}
 
 <<results='hide',echo=F>>=
+
 require(knitr)
-table <- as.data.frame(matrix(nrow=11,ncol=13))
-colnames(table) <- c("Scenario","Rule","Procedure","d","c","S","$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\pi_4$","$\\pi$","$\\eta_1$","$\\eta_2$")              
-table[1,] <- c("A","preplanned","gMCP",0,0,0,A[1,])
-table[2,] <- c(" ","select better","agMCP",0,0,0,A[11,])
-table[3,] <- c(" ","select better","sCTP",0,0,0,A[12,])
-table[4,] <- c(" ","select better SSR","agMCP",0,0,0,A[13,])
-table[5,] <- c(" ","select better SSR","sCTP",0,0,0,A[14,])
-table[6,] <- c(" ","Rule I","agMCP",0,0,0,A[13,])
-table[7,] <- c(" ","Rule I","sCTP",0,0,0,A[14,])
-table[8,] <- c(" ","Rule I SSR","agMCP",0,0,0,A[15,])
-table[9,] <- c(" ","Rule I SSR","sCTP",0,0,0,A[16,])
-table[10,] <- c(" ","Safety","agMCP",0,0,0,A[17,])
-table[11,] <- c(" ","Safety","sCTP",0,0,0,A[18,])
+require(xtable)
+table <- as.data.frame(matrix(nrow=39,ncol=13))
+colnames(table) <- c("Scenario","Rule","Procedure","d","c","S","$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\pi_4$","$\\pi$","$\\eta_1$","$\\eta_2$")          
+
+table[,1] <- c("A",rep(" ",5),
+               "B",rep(" ",8),
+               "C",rep(" ",8),
+               "D",rep(" ",8),
+               "E",rep(" ",5))
+table[,5] <- c("preplanned","select better","select better SSR",
+               "Rule I","Rule I SSR","Safety",
+               "preplanned","select better"," ","select better SSR"," ",
+               "Rule I"," ","Rule I SSR"," ",
+               "preplanned","select better"," ","select better SSR"," ",
+               "Rule I"," ","Rule I SSR"," ",
+               "preplanned","select better"," ","select better SSR"," ",
+               "Rule I"," ","Rule I SSR"," ",
+               "Safety",rep(" ",5))
+table[,6] <- c("gMCP",
+               rep("agMCP",5),
+               "gMCP",rep(c("agMCP","sCTP"),4),
+               "gMCP",rep(c("agMCP","sCTP"),4),
+               "gMCP",rep(c("agMCP","sCTP"),4),
+               rep(c("agMCP","sCTP"),3))
+table[,2] <- c("0",rep(" ",5),
+               ".3",rep(" ",8),
+               ".3",rep(" ",8),
+               ".3",rep(" ",8),
+               ".4",rep(" ",5))
+table[,3] <- c("0",rep(" ",5),
+               "0",rep(" ",8),
+               ".15",rep(" ",8),
+               ".3",rep(" ",8),
+               ".2",rep(" ",5))
+table[,4] <- c("0",rep(" ",5),
+               "0",rep(" ",8),
+               "0",rep(" ",8),
+               "0",rep(" ",8),
+               ".1"," ",".2"," ",".3"," ") 
+
+table[1,-(1:6)] <- A[1,]
+table[2,-(1:6)] <- A[11,]
+table[3,-(1:6)] <- A[13,]
+table[4,-(1:6)] <- A[15,]
+table[5,-(1:6)] <- A[17,]
+table[6,-(1:6)] <- A[19,]
+
+table[1+6,-(1:6)] <- B1[1,]
+table[2+6,-(1:6)] <- B1[11,]
+table[3+6,-(1:6)] <- B1[12,]
+table[4+6,-(1:6)] <- B1[13,]
+table[5+6,-(1:6)] <- B1[14,]
+table[6+6,-(1:6)] <- B1[15,]
+table[7+6,-(1:6)] <- B1[16,]
+table[8+6,-(1:6)] <- B1[17,]
+table[9+6,-(1:6)] <- B1[18,]
+
+table[1+15,-(1:6)] <- C1[1,]
+table[2+15,-(1:6)] <- C1[11,]
+table[3+15,-(1:6)] <- C1[12,]
+table[4+15,-(1:6)] <- C1[13,]
+table[5+15,-(1:6)] <- C1[14,]
+table[6+15,-(1:6)] <- C1[15,]
+table[7+15,-(1:6)] <- C1[16,]
+table[8+15,-(1:6)] <- C1[17,]
+table[9+15,-(1:6)] <- C1[18,]
+
+table[1+24,-(1:6)] <- D1[1,]
+table[2+24,-(1:6)] <- D1[11,]
+table[3+24,-(1:6)] <- D1[12,]
+table[4+24,-(1:6)] <- D1[13,]
+table[5+24,-(1:6)] <- D1[14,]
+table[6+24,-(1:6)] <- D1[15,]
+table[7+24,-(1:6)] <- D1[16,]
+table[8+24,-(1:6)] <- D1[17,]
+table[9+24,-(1:6)] <- D1[18,]
+
+table[1+33,-(1:6)] <- E1[19,]
+table[2+33,-(1:6)] <- E1[20,]
+table[3+33,-(1:6)] <- E2[19,]
+table[4+33,-(1:6)] <- E2[20,]
+table[5+33,-(1:6)] <- E3[19,]
+table[6+33,-(1:6)] <- E3[20,]
+
+
+
+
+strCaption <- "Simulation results"
+headline <- c(paste("\\toprule \n","Scen. & $\\delta_1$ & $\\delta_2 $ & $\\gamma$ & Rule & Procedure & $\\pi_1$ & $\\pi_2$ & $\\pi_3$ & $\\pi_4$ & $\\pi$ & $\\eta_1$ & $\\eta_2$ \\\\\n","\\midrule \n"),"\\bottomrule \n")
+
+numformat <- function(val) { sub("^(-?)0.", "\\1.", formatC(val,format="f",digits=2)) }
+out <- table
+for(j in 1:ncol(table)){
+  out[,j] <- gsub("^(-?)0.","\\1.",formatC(table[,j],format="f",digits=2))
+}
+
+#out[2:nrow(out),1] <- paste("\\cline{6-13}",out[2:nrow(out),1])
+
+for(j in grep('ag',out[,6])){
+  out[j,6:13] <- paste(out[j,6:13],"\\cellcolor[gray]{.8}")
+}
+
+tab <- xtable(out,format="latex",digits=2,caption=strCaption, label="tab:sim")
 
 @ 
 
-\begin{table}
-  \centering
-  <<results='asis'>>=
-kable(table)
+<<results='asis'>>=
+print(tab,include.rownames=FALSE,include.colnames=FALSE,caption.placement="bottom",hline.after=NULL,add.to.row = list(pos = list(-1, nrow(table)),command = headline),sanitize.text.function = function(x) x)
 @ 
 
-\caption{Simulation results}
-\label{tab:sim}
-\end{table}
+
 \end{document}

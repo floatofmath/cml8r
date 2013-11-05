@@ -7,37 +7,37 @@ source('functions.R')
 
 
 
-
+set.seed(675940)
 
 ## Scenario (A)
 ##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
-A <- simulation(.0,.0,.0,.0,.0,  .5,.5,  .3,0,    .5,1,0,-10,   10^5, .025)
+A <- simulation(.0,.0,.0,.0,.0,  .3,.5,  .3,0,    .5,1,0,-10,   10^6, .025, t1=TRUE)
 
 ## Scenario (B)
 ##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
-B1 <- simulation( .3,.0, 1,.0,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^5, .025)
-B2 <- simulation( .3,.0, 1,.5,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^5, .025)
-B3 <- simulation( .3,.0, 1, 1,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^4, .025)
+B1 <- simulation( 1/4,.0, 1,.0,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
+#B2 <- simulation( 1/4,.0, 1,.5,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
+#B3 <- simulation( 1/4,.0, 1, 1,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
 
 ## Scenario (C)
 ##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
-C1 <- simulation( .3,.5, 1,.0,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^5, .025)
-C2 <- simulation( .3,.5, 1,.5,.0,  .5,.5,  .3,0,    .5,0,0,qnorm(.05),   10^5, .025)
-C3 <- simulation( .3,.5, 1, 1,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^5, .025)
+C1 <- simulation( 1/4,.5, 1,.0,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
+#C2 <- simulation( 1/4,.5, 1,.5,.0,  .3,.5,  .3,0,    .5,0,0,qnorm(.05),   10^6, .025)
+#C3 <- simulation( 1/4,.5, 1, 1,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
 
 ## Scenario (D)
 ##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
-D1 <- simulation( .3, 1, 1,.0,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^5, .025)
-D2 <- simulation( .3, 1, 1,.5,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^5, .025)
-D3 <- simulation( .3, 1, 1, 1,.0,  .5,.5,  .3,0,    .5,1,0,qnorm(.05),   10^5, .025)
+D1 <- simulation( 1/4, 1, 1,.0,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
+#D2 <- simulation( 1/4, 1, 1,.5,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
+#D3 <- simulation( 1/4, 1, 1, 1,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
 
 ## Scenario (E)
 ##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
-E1 <- simulation( .4, 0, 1,.2,.0,  .5,.5,  .3,0,    .5,.8,.6,qnorm(.05),   10^5, .025)
-E2 <- simulation( .4, .4, 1,.5,.0,  .5,.5,  .3,0,    .5,.8,.6,qnorm(.05),   10^5, .025)
-E3 <- simulation( .4, .8, 1, 1,.0,  .5,.5,  .3,0,    .5,.8,.6,qnorm(.05),   10^5, .025)
+E1 <- simulation( .3, .2/.3, 1,.2,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
+E2 <- simulation( .3, .2/.3, 1,.5,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
+E3 <- simulation( .3, .2/.3, 1, 1,.0,  .3,.5,  .3,0,    .5,1,0,qnorm(.05),   10^6, .025)
 
-
+save(A,B1,C1,D1,E1,E2,E3,file='simulations.rd')
 or <- .3
 g <- .5
 R <- diag(1,8)
