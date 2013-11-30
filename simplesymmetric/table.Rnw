@@ -11,13 +11,13 @@ require(xtable)
 table <- as.data.frame(matrix(nrow=39,ncol=13))
 colnames(table) <- c("Scenario","Rule","Procedure","d","c","S","$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\pi_4$","$\\pi$","$\\eta_1$","$\\eta_2$")          
 
-table[,1] <- c("A",rep(" ",5),
+table[,1] <- c("A",rep(" ",10),
                "B",rep(" ",8),
                "C",rep(" ",8),
                "D",rep(" ",8),
                "E",rep(" ",5))
-table[,5] <- c("preplanned","select better","select better SSR",
-               "Rule I","Rule I SSR","Safety",
+table[,5] <- c("preplanned","select better"," ","select better SSR"," ",
+               "Rule I"," ","Rule I SSR"," ","Safety"," ",
                "preplanned","select better"," ","select better SSR"," ",
                "Rule I"," ","Rule I SSR"," ",
                "preplanned","select better"," ","select better SSR"," ",
@@ -26,22 +26,23 @@ table[,5] <- c("preplanned","select better","select better SSR",
                "Rule I"," ","Rule I SSR"," ",
                "Safety",rep(" ",5))
 table[,6] <- c("gMCP",
-               rep("agMCP",5),
+               #rep("agMCP",5),
+               rep(c("agMCP","sCTP"),5),
                "gMCP",rep(c("agMCP","sCTP"),4),
                "gMCP",rep(c("agMCP","sCTP"),4),
                "gMCP",rep(c("agMCP","sCTP"),4),
                rep(c("agMCP","sCTP"),3))
-table[,2] <- c("0",rep(" ",5),
+table[,2] <- c("0",rep(" ",10),
                ".3",rep(" ",8),
                ".3",rep(" ",8),
                ".3",rep(" ",8),
                ".4",rep(" ",5))
-table[,3] <- c("0",rep(" ",5),
+table[,3] <- c("0",rep(" ",10),
                "0",rep(" ",8),
                ".15",rep(" ",8),
                ".3",rep(" ",8),
                ".2",rep(" ",5))
-table[,4] <- c("0",rep(" ",5),
+table[,4] <- c("0",rep(" ",10),
                "0",rep(" ",8),
                "0",rep(" ",8),
                "0",rep(" ",8),

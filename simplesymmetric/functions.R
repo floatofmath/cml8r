@@ -156,16 +156,23 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
   stplr <- stps1r
   stplr[,larger2] <- stps2r[,larger2]
 
+  
+  
+  ## Rule proposed by reviewer 1
+  ## select treatments 50:50
 
-  ## sugitani in 50% of cases select 1, select the better in 50% of cases
-  ## correction: in select the better in 75% of cases
+  selone <- sample(1:B,B/2)
+  seltwo <- setdiff(1:B,selone)
+  
+  ## rule 1 in Sugitani et al.
+  ## select <- sample(1:B,B/2)
+  ## goon <- setdiff(1:B,select)
+  ## sellar <- sample(select,3*B/8)
+  ## selsma <- setdiff(select,sellar)
+  ## selone <- c(intersect(larger1,sellar),intersect(larger2,selsma))
+  ## seltwo <- c(intersect(larger2,sellar),intersect(larger1,selsma))
 
-  select <- sample(1:B,B/2)
-  goon <- setdiff(1:B,select)
-  sellar <- sample(select,3*B/8)
-  selsma <- setdiff(select,sellar)
-  selone <- c(intersect(larger1,sellar),intersect(larger2,selsma))
-  seltwo <- c(intersect(larger2,sellar),intersect(larger1,selsma))
+
   ## print(B - length(unique(c(selsma,selone,seltwo))))
   ## print(sum(duplicated(c(goon,selone,seltwo))))
 
@@ -238,7 +245,17 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
   pstplr <- c(pstplr,sum(apply(stplr,2,any,na.rm=T))/B,rowSums(is.na(stplr)[c(1,2),])/B)
 
 
-  ## Sugitani
+  ## ## Sugitani
+  ## pctdsu <- alt*rowSums(ctdsu,na.rm=T)/B
+  ## pctdsu <- c(pctdsu,sum(apply(ctdsu,2,any,na.rm=T))/B,rowSums(is.na(ctdsu)[c(1,2),])/B)
+  ## pstpsu <- alt*rowSums(stpsu,na.rm=T)/B
+  ## pstpsu <- c(pstpsu,sum(apply(stpsu,2,any,na.rm=T))/B,rowSums(is.na(stpsu)[c(1,2),])/B)
+  ## pctdsur <- alt*rowSums(ctdsur,na.rm=T)/B
+  ## pctdsur <- c(pctdsur,sum(apply(ctdsur,2,any,na.rm=T))/B,rowSums(is.na(ctdsur)[c(1,2),])/B)
+  ## pstpsur <- alt*rowSums(stpsur,na.rm=T)/B
+  ## pstpsur <- c(pstpsur,sum(apply(stpsur,2,any,na.rm=T))/B,rowSums(is.na(stpsur)[c(1,2),])/B)
+
+  ## ## Reviewer 1
   pctdsu <- alt*rowSums(ctdsu,na.rm=T)/B
   pctdsu <- c(pctdsu,sum(apply(ctdsu,2,any,na.rm=T))/B,rowSums(is.na(ctdsu)[c(1,2),])/B)
   pstpsu <- alt*rowSums(stpsu,na.rm=T)/B
@@ -248,6 +265,7 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
   pstpsur <- alt*rowSums(stpsur,na.rm=T)/B
   pstpsur <- c(pstpsur,sum(apply(stpsur,2,any,na.rm=T))/B,rowSums(is.na(stpsur)[c(1,2),])/B)
 
+  
 
  
   
