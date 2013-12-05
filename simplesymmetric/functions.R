@@ -10,10 +10,11 @@ make.correlation <- function(r,g){
   ## 1:4: Efficacy T1E1,T2E1,T1E2,T2E2, 5:6 Safety S1,S2
   R <- kronecker(diag(c(1,1,0),3,3),matrix(1/2,2,2)+diag(1/2,2,2))
   ## Correlation between efficacy and safety
-  R[1,5] <- R[5,1] <- -g
-  R[2,6] <- R[6,2] <- -g
-  R[3,5] <- R[5,3] <- -g*r
-  R[4,6] <- R[6,4] <- -g*r
+  R[1,5] <- R[5,1] <- R[2,6] <- R[6,2] <- -g
+  R[3,5] <- R[5,3] <- R[4,6] <- R[6,4] <- -g*r
+  R[5,6] <- R[6,5] <- 1/2
+  R[5,2] <- R[6,1] <- R[2,5] <- R[1,6] <- -g/2
+  R[6,3] <- R[5,4] <- R[4,5] <- R[3,6] <- -g*r/2
   ## Correlation between primary and secondary endpoints
   diag(R) <- 1
   R <- sM(r,R)
@@ -33,7 +34,7 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
                        alpha=.025,
                        t1=FALSE # should type 1 errors be counted?
                        ){
-  ## correlation structure                     
+  ## Correlation Structure                     
   R <- make.correlation(r,g)
   ## number of simulation runs
   #B <- 10^4
@@ -302,8 +303,8 @@ simulation <- function(d,c,e,s1,s2,#efficacy/safety profile
                       'sCTP Select 1 SSR','sCTP Select 2 SSR',
                       'agMTP Select better','sCTP Select better',
                       'agMTP Select better SSR','sCTP Select better SSR',
-                      'agMTP Rule I','sCTP Rule I',
-                      'agMTP Rule I SSR','sCTP Rule I SSR',
+                      'agMTP 50:50','sCTP 50:50',
+                      'agMTP 50:50 SSR','sCTP 50:50 SSR',
                       'agMTP Complex rule','sCTP Complex rule')
   return(out)
                       

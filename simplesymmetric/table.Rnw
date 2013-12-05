@@ -4,118 +4,73 @@
 \usepackage{booktabs}
 \begin{document}
 
-<<results='hide',echo=F>>=
+<<eval=T,echo=F>>=
 
 require(knitr)
 require(xtable)
-table <- as.data.frame(matrix(nrow=39,ncol=13))
-colnames(table) <- c("Scenario","Rule","Procedure","d","c","S","$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\pi_4$","$\\pi$","$\\eta_1$","$\\eta_2$")          
+load('./simulations_131201.Rd')
 
-table[,1] <- c("A",rep(" ",10),
-               "B",rep(" ",8),
-               "C",rep(" ",8),
-               "D",rep(" ",8),
-               "E",rep(" ",5))
-table[,5] <- c("preplanned","select better"," ","select better SSR"," ",
-               "Rule I"," ","Rule I SSR"," ","Safety"," ",
-               "preplanned","select better"," ","select better SSR"," ",
-               "Rule I"," ","Rule I SSR"," ",
-               "preplanned","select better"," ","select better SSR"," ",
-               "Rule I"," ","Rule I SSR"," ",
-               "preplanned","select better"," ","select better SSR"," ",
-               "Rule I"," ","Rule I SSR"," ",
-               "Safety",rep(" ",5))
-table[,6] <- c("gMCP",
-               #rep("agMCP",5),
-               rep(c("agMCP","sCTP"),5),
-               "gMCP",rep(c("agMCP","sCTP"),4),
-               "gMCP",rep(c("agMCP","sCTP"),4),
-               "gMCP",rep(c("agMCP","sCTP"),4),
-               rep(c("agMCP","sCTP"),3))
-table[,2] <- c("0",rep(" ",10),
-               ".3",rep(" ",8),
-               ".3",rep(" ",8),
-               ".3",rep(" ",8),
-               ".4",rep(" ",5))
-table[,3] <- c("0",rep(" ",10),
-               "0",rep(" ",8),
-               ".15",rep(" ",8),
-               ".3",rep(" ",8),
-               ".2",rep(" ",5))
-table[,4] <- c("0",rep(" ",10),
-               "0",rep(" ",8),
-               "0",rep(" ",8),
-               "0",rep(" ",8),
-               ".1"," ",".2"," ",".3"," ") 
 
-table[1,-(1:6)] <- A[1,]
-table[2,-(1:6)] <- A[11,]
-table[3,-(1:6)] <- A[13,]
-table[4,-(1:6)] <- A[15,]
-table[5,-(1:6)] <- A[17,]
-table[6,-(1:6)] <- A[19,]
+rownames(A)[1] <- "gMCP Pre-planned"
+a <- c(1,11,12,13,14,17,18)
+b <- c(19,20)
+table <- as.data.frame(rbind(A[c(a,b),],
+                             B1[a,],
+                             C1[a,],
+                             D1[a,],
+                             E1[b,],
+                             E2[b,],
+                             E3[b,]),row.names=NA)*100
 
-table[1+6,-(1:6)] <- B1[1,]
-table[2+6,-(1:6)] <- B1[11,]
-table[3+6,-(1:6)] <- B1[12,]
-table[4+6,-(1:6)] <- B1[13,]
-table[5+6,-(1:6)] <- B1[14,]
-table[6+6,-(1:6)] <- B1[15,]
-table[7+6,-(1:6)] <- B1[16,]
-table[8+6,-(1:6)] <- B1[17,]
-table[9+6,-(1:6)] <- B1[18,]
+anno <- as.data.frame(matrix(" ",nrow=nrow(table),ncol=6))
+proc <- sapply(strsplit(rownames(A)," "),function(s) s[[1]])
+rule <- sapply(strsplit(rownames(A)," "),function(s) paste(unlist(tail(s,-1)),collapse=" "))
+anno[,1] <- c(rep('A',length(c(a,b))),rep(c('B','C','D'),each=length(a)),rep('E',3*length(b)))
+anno[,5] <- c(rule[c(a,b)],rep(rule[a],3),rep(rule[b],3))
+anno[,6] <- c(proc[c(a,b)],rep(proc[a],3),rep(proc[b],3))
+anno[,2] <- c(rep(0,length(c(a,b))),rep(c(.3,.3,.3),each= length(a)),rep(c(.4,.4,.4),each=length(b)))
+anno[,3] <- c(rep(0,length(c(a,b))),rep(c(0,.15,.3),each= length(a)),rep(c(.2,.2,.2),each=length(b)))
+anno[,4] <- c(rep(0,length(c(a,b))),rep(c(0,0,0),each= length(a)),rep(c(.1,.2,1),each=length(b)))
 
-table[1+15,-(1:6)] <- C1[1,]
-table[2+15,-(1:6)] <- C1[11,]
-table[3+15,-(1:6)] <- C1[12,]
-table[4+15,-(1:6)] <- C1[13,]
-table[5+15,-(1:6)] <- C1[14,]
-table[6+15,-(1:6)] <- C1[15,]
-table[7+15,-(1:6)] <- C1[16,]
-table[8+15,-(1:6)] <- C1[17,]
-table[9+15,-(1:6)] <- C1[18,]
+pp <- which(anno[,5] == 'Pre-planned')[-1]
+table <- cbind(anno,table)[-pp,]
+table[duplicated(table[,1]),1] <- ' '
+anno <- anno[-pp,]
+table[duplicated(paste(anno[,1],anno[,2])),2] <- ' '
+table[duplicated(paste(anno[,1],anno[,2],anno[,3])),3] <- ' '
+table[duplicated(paste(anno[,1],anno[,2],anno[,3],anno[,4])),4] <- ' '
+table[duplicated(paste(anno[,1],anno[,2],anno[,3],anno[,4],anno[,5])),5] <- ' '
 
-table[1+24,-(1:6)] <- D1[1,]
-table[2+24,-(1:6)] <- D1[11,]
-table[3+24,-(1:6)] <- D1[12,]
-table[4+24,-(1:6)] <- D1[13,]
-table[5+24,-(1:6)] <- D1[14,]
-table[6+24,-(1:6)] <- D1[15,]
-table[7+24,-(1:6)] <- D1[16,]
-table[8+24,-(1:6)] <- D1[17,]
-table[9+24,-(1:6)] <- D1[18,]
 
-table[1+33,-(1:6)] <- E1[19,]
-table[2+33,-(1:6)] <- E1[20,]
-table[3+33,-(1:6)] <- E2[19,]
-table[4+33,-(1:6)] <- E2[20,]
-table[5+33,-(1:6)] <- E3[19,]
-table[6+33,-(1:6)] <- E3[20,]
-
+colnames(table) <- c("Scenario","\\delta_1","\\delta_2","\\gamma","Rule","Procedure","$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\pi_4$","$\\pi$","$\\eta_1$","$\\eta_2$")          
 
 
 
 strCaption <- "Simulation results"
 headline <- c(paste("\\toprule \n","Scen. & $\\delta_1$ & $\\delta_2 $ & $\\gamma$ & Rule & Procedure & $\\pi_1$ & $\\pi_2$ & $\\pi_3$ & $\\pi_4$ & $\\pi$ & $\\eta_1$ & $\\eta_2$ \\\\\n","\\midrule \n"),"\\bottomrule \n")
 
-numformat <- function(val) { sub("^(-?)0.", "\\1.", formatC(val,format="f",digits=2)) }
+## remove leading zeroes
+numformat <- function(val) { gsub("^(-?)0.", "\\1.", formatC(val,format="f",digits=1)) }
+## keep leading zeroes
+numformat.kz <- function(val) { formatC(val,format="f",digits=1) }
 out <- table
 for(j in 1:ncol(table)){
-  out[,j] <- gsub("^(-?)0.","\\1.",formatC(table[,j],format="f",digits=2))
+  out[,j] <- numformat.kz(table[,j])
 }
 
 #out[2:nrow(out),1] <- paste("\\cline{6-13}",out[2:nrow(out),1])
 
 for(j in grep('ag',out[,6])){
-  out[j,6:13] <- paste(out[j,6:13],"\\cellcolor[gray]{.8}")
+  out[j,6:13] <- paste(out[j,6:13],"\\cellcolor[gray]{.8}",sep='')
 }
 
-tab <- xtable(out,format="latex",digits=2,caption=strCaption, label="tab:sim")
+require(xtable)
+tab <- xtable(out,format="latex",digits=2,caption=strCaption, label="tab:sim",align=rep('r',ncol(out)+1))
 
 @ 
 
-<<results='asis'>>=
-print(tab,include.rownames=FALSE,include.colnames=FALSE,caption.placement="bottom",hline.after=NULL,add.to.row = list(pos = list(-1, nrow(table)),command = headline),sanitize.text.function = function(x) x)
+<<eval=T,echo=F,results='asis'>>=
+print(tab,include.rownames=FALSE,include.colnames=FALSE,caption.placement="bottom",hline.after=NULL,add.to.row = list(pos = list(-1, nrow(table)),command = headline),sanitize.text.function = function(x) x,size='footnotesize')
 @ 
 
 
