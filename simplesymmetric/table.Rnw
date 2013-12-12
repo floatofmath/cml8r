@@ -8,7 +8,7 @@
 
 require(knitr)
 require(xtable)
-load('./simulations_131201.Rd')
+load('./simulations_131211.Rd')
 
 
 rownames(A)[1] <- "gMCP Pre-planned"
@@ -32,10 +32,11 @@ anno[,2] <- c(rep(0,length(c(a,b))),rep(c(.3,.3,.3),each= length(a)),rep(c(.4,.4
 anno[,3] <- c(rep(0,length(c(a,b))),rep(c(0,.15,.3),each= length(a)),rep(c(.2,.2,.2),each=length(b)))
 anno[,4] <- c(rep(0,length(c(a,b))),rep(c(0,0,0),each= length(a)),rep(c(.1,.2,1),each=length(b)))
 
-pp <- which(anno[,5] == 'Pre-planned')[-1]
-table <- cbind(anno,table)[-pp,]
+#pp <- {!(anno[,5] == 'Pre-planned')}[-1]
+pp <- 1:nrow(anno)
+table <- cbind(anno,table)[pp,]
 table[duplicated(table[,1]),1] <- ' '
-anno <- anno[-pp,]
+anno <- anno[pp,]
 table[duplicated(paste(anno[,1],anno[,2])),2] <- ' '
 table[duplicated(paste(anno[,1],anno[,2],anno[,3])),3] <- ' '
 table[duplicated(paste(anno[,1],anno[,2],anno[,3],anno[,4])),4] <- ' '

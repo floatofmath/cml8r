@@ -6,10 +6,14 @@ source('../functions.R')
 source('functions.R')
 
 
+## why we choose n =  2*n1 = 200
+G <- simpleSuccessiveI()
+R <- make.correlation(.3,.5)
+calcPower(G@weights,.025,G@m,mean=sqrt(200/2)*rep(.3,4),sigma=R[1:4,1:4])
 
 set.seed(675940)
 
-B <- 10^5
+B <- 10^6
 
 ## Scenario (A)
 ##         d, c, e, s1,s2,  r, g,   D,gamma,  v,cpup,cpdn,sftt, B, alpha
